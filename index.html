@@ -1,0 +1,56 @@
+<!doctype html><html lang="ru" data-background-flow style="--bg:#ffffff;--fg:#004cff;--accent:#bd4628;--on-accent:#ffffff;--flow-gradient:linear-gradient(130deg,#ffffff 0%,#3fe01f 100%);--flow-start-x:12%;--flow-start-y:18%;--flow-end-x:88%;--flow-end-y:82%;--flow-duration:8s"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Главная · list progett</title><link rel="stylesheet" href="assets/site.css"></head><body><div class="frame with-free-blocks"><main class="site-main"><div class="site-flow"><section class="section"><h2 class="heading">вышел новый лаунечер для браузерав</h2></section></div><div class="free-layer"><div class="free-block free-sheet" style="--place-x:20;--place-y:0;--place-turn:0deg;--place-scale:1;--place-top:1352px;--place-width:78%"><div class="site-sheet" aria-hidden="true"></div></div><div class="free-block" style="--place-x:0;--place-y:0;--place-turn:0deg;--place-scale:1.23;--place-top:201px;--place-width:42%"><section class="section picture"><img src="resources/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202026-11-10%20200611.png" alt=""></section></div><div class="free-block" style="--place-x:92;--place-y:0;--place-turn:0deg;--place-scale:1;--place-top:193px;--place-width:42%"><section class="section" style="--costume-outline:#41bd28" data-costume="outline"><h2 class="heading">хороший</h2></section></div><div class="free-block" style="--place-x:100;--place-y:0;--place-turn:0deg;--place-scale:1.15;--place-top:246px;--place-width:42%"><section class="section picture"><img src="resources/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202026-11-10%20200535.png" alt=""></section></div><div class="free-block" style="--place-x:2;--place-y:0;--place-turn:0deg;--place-scale:1.2;--place-top:479px;--place-width:42%"><section class="section"><p class="text"></p></section></div><div class="free-block" style="--place-x:4;--place-y:0;--place-turn:0deg;--place-scale:1.17;--place-top:482px;--place-width:42%"><section class="section" style="--costume-outline:#2df505;--costume-shadow:0 6px 20px #0003" data-costume="outline shadow"><p class="text">лучий</p></section></div><div class="free-block" style="--place-x:47;--place-y:0;--place-turn:0deg;--place-scale:1;--place-top:542px;--place-width:42%"><article class="section card single-card"><h2>создавай сайты написав почту в TГ</h2><p></p></article></div><div class="free-block" style="--place-x:50;--place-y:0;--place-turn:0deg;--place-scale:1;--place-top:594px"><section class="section button-section"><a class="cta" href="https://web.telegram.org/k/#@VityaSiteRegisterBot" target="_blank" rel="noopener noreferrer">ТГ<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></a></section></div><div class="free-block" style="--place-x:45;--place-y:0;--place-turn:0deg;--place-scale:1;--place-top:759px"><section class="section button-section"><span class="cta text-button" aria-disabled="true">Кнопка</span></section></div><div class="free-block" style="--place-x:44;--place-y:0;--place-turn:0deg;--place-scale:1;--place-top:652px"><section class="section button-section"><a class="cta" href="skachat.html">скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></a></section></div></div></main></div><script>(function mountFreeLayout(layer) {
+  const main = layer.parentElement;
+  const flow = layer.previousElementSibling;
+  const frame = main.parentElement;
+  const view = layer.ownerDocument.defaultView;
+  const viewport = layer.ownerDocument.documentElement;
+  const blocks = Array.from(layer.children,node=>{
+    const content = node.firstElementChild;
+    const button = content.classList.contains("button-section");
+    return {node,content,button,target:button ? content.firstElementChild : content};
+  });
+  const refresh = () => {
+    const areaWidth = layer.clientWidth;
+    if (!areaWidth) return;
+    const geometry = blocks.map(({node,content,button,target})=>{
+      const turn = parseFloat(node.style.getPropertyValue("--place-turn"))*Math.PI/180;
+      const cos = Math.abs(Math.cos(turn)), sin = Math.abs(Math.sin(turn));
+      const w = target.offsetWidth, h = target.offsetHeight;
+      const rotatedWidth = w*cos+h*sin;
+      const requestedScale = parseFloat(node.style.getPropertyValue("--place-scale")) || 1;
+      const scale = Math.min(requestedScale,areaWidth/Math.max(1,rotatedWidth));
+      return {
+        node,scale,width:rotatedWidth*scale,height:(w*sin+h*cos)*scale,
+        top:parseFloat(node.style.getPropertyValue("--place-top")),
+        centerX:target.offsetLeft+w/2+(button?content.offsetLeft:0),
+        centerY:target.offsetTop+h/2+(button?content.offsetTop:0)
+      };
+    });
+    const padding = parseFloat(view.getComputedStyle(main).paddingBottom) || 0;
+    const chrome = (frame.querySelector(".site-head")?.offsetHeight ?? 0)+(frame.querySelector(".site-footer")?.offsetHeight ?? 0);
+    // Relative positions use the ordinary page height. New space below them
+    // must not shift blocks that were already placed.
+    const baseHeight = Math.max(156,viewport.clientHeight-chrome-64,flow.offsetHeight+padding-64,
+      ...geometry.filter(item=>!item.node.classList.contains("free-sheet")).map(item=>item.height));
+    const heightNeeded = Math.ceil(Math.max(baseHeight,...geometry.filter(item=>Number.isFinite(item.top)).map(item=>item.top+item.height)));
+    main.style.setProperty("--free-height",heightNeeded+"px");
+    for (const {node,scale,width,height,centerX,centerY} of geometry) {
+      const style = node.style;
+      style.setProperty("--fit-scale",scale);
+      style.setProperty("--fit-room-x",Math.max(0,areaWidth-width)+"px");
+      style.setProperty("--fit-room-y",Math.max(0,baseHeight-height)+"px");
+      style.setProperty("--fit-offset-x",width/2-centerX+"px");
+      style.setProperty("--fit-offset-y",height/2-centerY+"px");
+      style.setProperty("--fit-center-x",centerX+"px");
+      style.setProperty("--fit-right",centerX+width/2+"px");
+      style.setProperty("--fit-bottom",centerY+height/2+"px");
+    }
+  };
+  const observer = new view.ResizeObserver(refresh);
+  observer.observe(layer);
+  observer.observe(flow);
+  observer.observe(viewport);
+  for (const {target} of blocks) observer.observe(target);
+  refresh();
+  return {blocks,refresh};
+})(document.querySelector(".free-layer"));</script></body></html>
